@@ -12,8 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */#include <log/log.h>
-
+ */
+ 
+#include <log/log.h>
 #include <phDal4Nfc_messageQueueLib.h>
 #include <phNxpConfig.h>
 #include <phNxpLog.h>
@@ -854,6 +855,29 @@ NFCSTATUS phNxpNciHal_write_ext(uint16_t* cmd_len, uint8_t* p_cmd_data,
     }
   }
 
+  if ((nfcFL.chipType == pn548C2) &&
+          (p_cmd_data[0] == 0x20 && p_cmd_data[1] == 0x02)) {
+      uint8_t temp;
+      uint8_t* p = p_cmd_data + 4;
+      uint8_t* end = p_cmd_data + *cmd_len;
+      while (p < end) {
+          if (*p == 0x53)  // LF_T3T_FLAGS
+          {
+              NXPLOG_NCIHAL_D("> Going through workaround - LF_T3T_FLAGS swap");
+              temp = *(p + 3);
+              *(p + 3) = *(p + 2);
+              *(p + 2) = temp;
+              NXPLOG_NCIHAL_D("> Going through workaround - LF_T3T_FLAGS - End");
+              status = NFCSTATUS_SUCCESS;
+              break;
+          }
+          if (*p == 0xA0) {
+              p += *(p + 2) + 3;
+          } else {
+              p += *(p + 1) + 2;
+          }
+      }
+  }
 
   return status;
 }
