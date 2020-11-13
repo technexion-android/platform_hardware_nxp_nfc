@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014 NXP Semiconductors
+ * Copyright (C) 2010-2014,2020 NXP Semiconductors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #include <hardware/nfc.h>
 #include <phNxpNciHal_utils.h>
 #include "NxpNfcCapability.h"
+#include "hal_nxpnfc.h"
 
 /********************* Definitions and structures *****************************/
 #define MAX_RETRY_COUNT 5
@@ -33,6 +34,7 @@
 typedef void(phNxpNciHal_control_granted_callback_t)();
 
 /*ROM CODE VERSION FW*/
+#define FW_MOBILE_ROM_VERSION_PN548AD 0x10
 #define FW_MOBILE_ROM_VERSION_PN551 0x10
 #define FW_MOBILE_ROM_VERSION_PN553 0x11
 #define FW_MOBILE_ROM_VERSION_PN557 0x12
@@ -177,6 +179,8 @@ int phNxpNciHal_check_ncicmd_write_window(uint16_t cmd_len, uint8_t* p_cmd);
 void phNxpNciHal_request_control(void);
 void phNxpNciHal_release_control(void);
 int phNxpNciHal_write_unlocked(uint16_t data_len, const uint8_t* p_data);
+NFCSTATUS phNxpNciHal_core_reset_recovery();
+void phNxpNciHal_discovery_cmd_ext(uint8_t* p_cmd_data, uint16_t cmd_len);
 /*******************************************************************************
 **
 ** Function         phNxpNciHal_configFeatureList
@@ -186,4 +190,17 @@ int phNxpNciHal_write_unlocked(uint16_t data_len, const uint8_t* p_data);
 ** Returns          none
 *******************************************************************************/
 void phNxpNciHal_configFeatureList(uint8_t* init_rsp, uint16_t rsp_len);
+#if(NXP_EXTNS == TRUE)
+/*******************************************************************************
+**
+** Function         phNxpNciHal_getNxpConfig
+**
+** Description      Read vendor configuration macro values
+**
+** Parameters       ioctl input/output struct.
+**
+** Returns          none
+*******************************************************************************/
+void phNxpNciHal_getNxpConfig(nfc_nci_IoctlInOutData_t *pInpOutData);
+#endif
 #endif /* _PHNXPNCIHAL_H_ */

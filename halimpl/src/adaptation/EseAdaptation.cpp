@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  *
- *  Copyright (C) 2015 NXP Semiconductors
+ *  Copyright (C) 2015,2020 NXP Semiconductors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -57,8 +57,6 @@ ThreadCondVar EseAdaptation::mHalCoreInitCompletedEvent;
 ThreadCondVar EseAdaptation::mHalInitCompletedEvent;
 #define SIGNAL_NONE 0
 #define SIGNAL_SIGNALED 1
-static uint8_t isSignaled = SIGNAL_NONE;
-static uint8_t evt_status;
 #endif
 
 /*******************************************************************************
