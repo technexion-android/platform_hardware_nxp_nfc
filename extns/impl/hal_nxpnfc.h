@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  Copyright 2018 NXP
+ *  Copyright 2018,2020 NXP
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27,6 +27,11 @@ enum {
   // HAL_NFC_ENABLE_I2C_FRAGMENTATION_EVT = 0x07,
   HAL_NFC_POST_MIN_INIT_CPLT_EVT = 0x08
 };
+
+enum {
+  HAL_NFC_GET_NXP_CONFIG = 30,
+};
+
 /*
  * Data structures provided below are used of Hal Ioctl calls
  */
@@ -76,6 +81,10 @@ typedef struct {
   long level;
 } nfc_nci_ExtnInputData_t;
 
+typedef struct {
+  uint8_t wAgcDebugEnable;
+} nxp_nfc_config_t;
+
 /*
  * outputData_t :ioctl has multiple commands/responses
  * This contains the output types for each ioctl.
@@ -89,6 +98,7 @@ typedef union {
   uint16_t fwDwnldStatus;
   uint16_t fwMwVerStatus;
   uint8_t chipType;
+  nxp_nfc_config_t nxpConfigs;
 } outputData_t;
 
 /*
